@@ -19,7 +19,7 @@ function Login() {
     role: "", 
   });
   const navigate = useNavigate();
-
+  const [userRole, setUserRole] = useState(""); 
   const inputChange = (e) => {
     const { name, value } = e.target;
     return setFormDetails({
@@ -36,7 +36,7 @@ function Login() {
         return toast.error("Email and password are required");
       } else if (!role) {
         return toast.error("Please select a role");
-      } else if (role !== "Admin" && role !== "Doctor") {
+      } else if (role !== "Admin" && role !== "Doctor" && role !== "Patient") {
         return toast.error("Please select a valid role");
       } else if (password.length < 5) {
         return toast.error("Password must be at least 5 characters long");
@@ -48,6 +48,7 @@ function Login() {
           password,
           role,
         }),
+        
         {
           pending: "Logging in...",
           success: "Login successfully",
@@ -57,6 +58,7 @@ function Login() {
       );
       localStorage.setItem("token", data.token);
       dispatch(setUserInfo(jwt_decode(data.token).userId));
+      setUserRole(role);
       getUser(jwt_decode(data.token).userId, role);
     } catch (error) {
       return error;
@@ -70,6 +72,8 @@ function Login() {
       dispatch(setUserInfo(temp));
       if (role === "Admin") {
         return navigate("/dashboard/home");
+      } else if (role === "Patient"){
+        return navigate("/");
       } else {
         return navigate("/");
       }
@@ -80,7 +84,7 @@ function Login() {
 
   return (
     <>
-      <Navbar />
+      <Navbar  /> 
       <section className="register-section flex-center">
         <div className="register-container flex-center">
           <h2 className="form-heading">Sign In</h2>
@@ -110,6 +114,7 @@ function Login() {
               <option value="">Select Role</option>
               <option value="Admin">Admin</option>
               <option value="Doctor">Doctor</option>
+              <option value="Patient">Patient</option>
             </select>
             <button type="submit" className="btn form-btn">
               sign in

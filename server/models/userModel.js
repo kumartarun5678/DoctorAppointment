@@ -25,7 +25,7 @@ const schema = mongoose.Schema(
     role: {
       type: String,
       required: true,
-      enum: ["Admin", "Doctor"],
+      enum: ["Admin", "Doctor", "Patient"],
     },
     age: {
       type: Number,

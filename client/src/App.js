@@ -1,3 +1,4 @@
+import { useState } from "react";
 import "./styles/app.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Login from "./pages/Login";
@@ -22,10 +23,12 @@ const ApplyDoctor = lazy(() => import("./pages/ApplyDoctor"));
 const Error = lazy(() => import("./pages/Error"));
 
 function App() {
+  const [userRole, setUserRole] = useState("");
   return (
     <Router>
       <Toaster />
       <Suspense fallback={<Loading />}>
+
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/forgotpassword" element={<ForgotPassword />} />

@@ -1,31 +1,29 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import "../styles/navbar.css";
 import { HashLink } from "react-router-hash-link";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setUserInfo } from "../redux/reducers/rootSlice";
 import { FiMenu } from "react-icons/fi";
 import { RxCross1 } from "react-icons/rx";
 import jwt_decode from "jwt-decode";
-import axios from "axios";
-
-axios.defaults.baseURL = process.env.REACT_APP_SERVER_DOMAIN;
 
 const Navbar = () => {
   const [iconActive, setIconActive] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const token = localStorage.getItem("token") || "";
-  const user = token ? jwt_decode(token) : null;
-
-  const{userInfo} = useSelector((state)=>state.root);
-  
+  const [token, setToken] = useState(localStorage.getItem("token") || "");
+  const [user, setUser] = useState(
+    localStorage.getItem("token")
+      ? jwt_decode(localStorage.getItem("token"))
+      : ""
+  );
 
   const logoutFunc = () => {
     dispatch(setUserInfo({}));
     localStorage.removeItem("token");
     navigate("/login");
-  }
+  };
 
   return (
     <header>
@@ -37,36 +35,21 @@ const Navbar = () => {
           <li>
             <NavLink to={"/"}>Home</NavLink>
           </li>
-          {user && user.role === "Doctor" && (
-            <>
-              <li>
-                <NavLink to={"/applyfordoctor"}>Apply for doctor</NavLink>
-              </li>
-              <li>
-                <NavLink to={"/appointments"}>Appointments</NavLink>
-              </li>
-              <li>
-                <NavLink to={"/notifications"}>Notifications</NavLink>
-              </li>
-              <li>
-                <HashLink to={"/#contact"}>Contact Us</HashLink>
-              </li>
-              <li>
-                <NavLink to={"/profile"}>Profile</NavLink>
-              </li>
-              <li>
-                <NavLink to={"/ChangePassword"}>ChangePassword</NavLink>
-              </li>
-            </>
+          <li>
+            <NavLink to={"/doctors"}>Doctors</NavLink>
+          </li>
+          {token && user.isAdmin && (
+            <li>
+              <NavLink to={"/dashboard/users"}>Dashboard</NavLink>
+            </li>
           )}
-          {user && user.role === "Patient" && (
+          {token && !user.isAdmin && (
             <>
-              <li>
-                <NavLink to={"/doctors"}>Doctors</NavLink>
-              </li>
+             
               <li>
                 <NavLink to={"/notifications"}>Notifications</NavLink>
               </li>
+              
               <li>
                 <HashLink to={"/#contact"}>Contact Us</HashLink>
               </li>
@@ -80,6 +63,7 @@ const Navbar = () => {
           )}
           {!token ? (
             <>
+
               <li>
                 <NavLink className="btn" to={"/login"}>
                   Login
