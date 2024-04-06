@@ -12,3 +12,19 @@
 .disable-btn:hover {
   background-color: rgba(0, 128, 0, 0.528) !important;
 }
+.pagination {
+  display: flex;
+  gap: 8px; 
+  justify-content: center; 
+}
+
+.pagination button {
+  padding: 8px 12px;
+  background-color: #e2dddd;
+  border: 1px solid #acabab;
+  cursor: pointer;
+}
+
+.pagination button:hover {
+  background-color: #28d33f;
+}

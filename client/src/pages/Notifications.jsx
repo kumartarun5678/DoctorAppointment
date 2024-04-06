@@ -11,21 +11,46 @@ import "../styles/user.css";
 
 const Notifications = () => {
   const [notifications, setNotifications] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const notificationsPerPage = 8;
   const dispatch = useDispatch();
   const { loading } = useSelector((state) => state.root);
 
-  const getAllNotif = async (e) => {
+  const getAllNotif = async () => {
     try {
       dispatch(setLoading(true));
-      const temp = await fetchData(`/notification/getallnotifs`);
+      const temp = await fetchData(`/notification/getallnotifs?page=${currentPage - 1}&limit=${notificationsPerPage}`);
       dispatch(setLoading(false));
       setNotifications(temp);
-    } catch (error) {}
+    } catch (error) {
+      console.error("Error fetching notifications:", error);
+    }
   };
 
   useEffect(() => {
     getAllNotif();
-  }, []);
+  }, [currentPage]);
+
+  const totalPages = Math.ceil(notifications.length / notificationsPerPage);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  const renderPagination = () => {
+    const pages = [];
+    for (let i = 1; i <= totalPages; i++) {
+      pages.push(
+        <button key={i} onClick={() => handlePageChange(i)}>{i}</button>
+      );
+    }
+    return pages;
+  };
+
+  const paginatedNotifications = notifications.slice(
+    (currentPage - 1) * notificationsPerPage,
+    currentPage * notificationsPerPage
+  );
 
   return (
     <>
@@ -48,18 +73,17 @@ const Notifications = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {notifications?.map((ele, i) => {
-                    return (
-                      <tr key={ele?._id}>
-                        <td>{i + 1}</td>
-                        <td>{ele?.content}</td>
-                        <td>{ele?.updatedAt.split("T")[0]}</td>
-                        <td>{ele?.updatedAt.split("T")[1].split(".")[0]}</td>
-                      </tr>
-                    );
-                  })}
+                  {paginatedNotifications.map((ele, i) => (
+                    <tr key={ele?._id}>
+                      <td>{(currentPage - 1) * notificationsPerPage + i + 1}</td>
+                      <td>{ele?.content}</td>
+                      <td>{ele?.updatedAt.split("T")[0]}</td>
+                      <td>{ele?.updatedAt.split("T")[1].split(".")[0]}</td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
+              <div className="pagination">{renderPagination()}</div>
             </div>
           ) : (
             <Empty />

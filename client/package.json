@@ -35,7 +35,9 @@
     "react-scripts": "5.0.1",
     "react-spinners": "^0.13.8",
     "react-time-picker": "^5.2.0",
+    "react-twilio-video": "^1.1.16",
     "recharts": "^2.12.3",
+    "twilio-video": "^2.28.1",
     "vite-plugin-rewrite-all": "^1.0.2",
     "web-vitals": "^2.1.4"
   },

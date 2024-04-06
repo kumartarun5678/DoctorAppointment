@@ -107,6 +107,24 @@ textarea,select{
   display: flex;
   justify-self: flex-end;
 }
+.pagination {
+  display: flex;
+  gap: 8px; 
+  justify-content: center; 
+}
+
+.pagination button {
+  padding: 8px 12px;
+  background-color: #e2dddd;
+  border: 1px solid #acabab;
+  cursor: pointer;
+}
+
+.pagination button:hover {
+  background-color: #28d33f;
+}
+
+
 @media (max-width: 1126px) {
   .user-section {
     width: 70vw;
