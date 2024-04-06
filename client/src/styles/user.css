@@ -109,7 +109,7 @@ textarea,select{
 }
 .pagination {
   display: flex;
-  gap: 8px; 
+  gap: 9px; 
   justify-content: center; 
 }
 
