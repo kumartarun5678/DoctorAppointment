@@ -68,12 +68,12 @@ This Doctor Appointment System is a web application built using the MERN stack (
 
 ## Technologies Used
 
-- Frontend: React.js, Redux, React Router
-- Backend: Node.js, Express.js
-- Database: MongoDB
+- Frontend: React.js, Redux, React Router,react-dom, react-redux, react-spinners, jwt-decode, react-time-picker, react-icon, react-countup, dotenv
+- Backend: Node.js, Express.js, bcrypt, cors, dotenv, nodemailer,
+- Database: MongoDB, mongoose
 - Authentication: JWT (JSON Web Tokens)
-- Styling: CSS, Bootstrap (optional)
-- Other: Axios, React Hot Toast, Nivo Charts
+- Styling: CSS
+- Other: Axios, React Hot Toast, recharts
 
 ## Usage
 
