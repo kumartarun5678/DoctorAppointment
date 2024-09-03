@@ -20,6 +20,7 @@
     "firebase": "^9.15.0",
     "jsonwebtoken": "^9.0.2",
     "jwt-decode": "^3.1.2",
+    "multer": "^1.4.5-lts.1",
     "otp-input-react": "^0.3.0",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
@@ -29,6 +30,7 @@
     "react-icon": "^1.0.0",
     "react-icons": "^4.7.1",
     "react-phone-input-2": "^2.15.1",
+    "react-player": "^2.15.1",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.8.0",
     "react-router-hash-link": "^2.4.3",
@@ -37,6 +39,7 @@
     "react-time-picker": "^5.2.0",
     "react-twilio-video": "^1.1.16",
     "recharts": "^2.12.3",
+    "socket.io-client": "^4.7.5",
     "twilio-video": "^2.28.1",
     "vite-plugin-rewrite-all": "^1.0.2",
     "web-vitals": "^2.1.4"

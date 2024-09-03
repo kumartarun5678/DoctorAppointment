@@ -8,6 +8,12 @@ const BookAppointment = ({ setModalOpen, ele }) => {
   const [formDetails, setFormDetails] = useState({
     date: "",
     time: "",
+    age:"",
+    bloodGroup:"",
+    gender:"",
+    number: "",
+    familyDiseases:"",
+    // prescription:"",
   });
 
   const inputChange = (e) => {
@@ -28,6 +34,12 @@ const BookAppointment = ({ setModalOpen, ele }) => {
             doctorId: ele?.userId?._id,
             date: formDetails.date,
             time: formDetails.time,
+            age: formDetails.age,
+            bloodGroup: formDetails.bloodGroup,
+            gender: formDetails.gender,
+            number:formDetails.number,
+            familyDiseases: formDetails.familyDiseases,
+            // prescription: formDetails.prescription,
             doctorname: `${ele?.userId?.firstname} ${ele?.userId?.lastname}`,
           },
           {
@@ -75,6 +87,60 @@ const BookAppointment = ({ setModalOpen, ele }) => {
                 value={formDetails.time}
                 onChange={inputChange}
               />
+             <input
+              type="number"
+              name="age"
+              placeholder="Age"
+              className="form-input"
+              value={formDetails.age}
+              onChange={inputChange}
+              required
+            />
+            <input
+              type="text"
+              name="bloodGroup"
+              placeholder="Blood Group (Optional)"
+              className="form-input"
+              value={formDetails.bloodGroup}
+              onChange={inputChange}
+            />
+            <select
+              name="gender"
+              className="form-input"
+              value={formDetails.gender}
+              onChange={inputChange}
+              required
+            >
+              
+              <option value="">Select Gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
+            <input
+              type="number"
+              name="number"
+              placeholder="Mobile Number"
+              className="form-input"
+              value={formDetails.number}
+              onChange={inputChange}
+              required
+            />
+            <textarea
+              name="familyDiseases"
+              placeholder="Family Diseases"
+              className="form-input"
+              value={formDetails.familyDiseases}
+              onChange={inputChange}
+            ></textarea>
+            {/* <input
+              type="file"
+              name="prescription"
+              accept="application/pdf"
+              className="form-input"
+              onChange={fileChange}
+            /> */}
+
               <button
                 type="submit"
                 className="btn form-btn"

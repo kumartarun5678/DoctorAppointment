@@ -20,6 +20,31 @@ const schema = mongoose.Schema(
       type: String,
       required: true,
     },
+    age: {
+      type: Number,
+      required: true,
+    },
+    bloodGroup: {
+      type: String,
+      required: false,
+    },
+    gender: {
+      type: String,
+      required: true,
+      enum: ["male", "female", "other"],
+    },
+    number: {
+      type: Number,
+      required: true,
+    },
+    familyDiseases: {
+      type: String,
+      required: false,
+    },
+    // prescription: {
+    //   type: String,
+    //   required: false,
+    // },
     status: {
       type: String,
       default: "Pending",

@@ -99,7 +99,12 @@ const Appointments = () => {
                   <tr>
                     <th>S.No</th>
                     <th>Doctor</th>
-                    <th>Patient</th>
+                    <th>P Name</th>
+                    <th>P Age</th>
+                    <th>P Gender</th>
+                    <th>P Mobile No.</th>
+                    <th>P bloodGroup</th>
+                    <th>P Family Diseases</th>
                     <th>Appointment Date</th>
                     <th>Status</th>
                     <th>Actions</th>
@@ -111,6 +116,11 @@ const Appointments = () => {
                       <td>{(currentPage - 1) * PerPage + index + 1}</td>
                       <td>{`${appointment.doctorId.firstname} ${appointment.doctorId.lastname}`}</td>
                       <td>{`${appointment.userId.firstname} ${appointment.userId.lastname}`}</td>
+                      <td>{appointment.age}</td> 
+                      <td>{appointment.gender}</td>
+                      <td>{appointment.number}</td>
+                      <td>{appointment.bloodGroup}</td>
+                      <td>{appointment.familyDiseases}</td>
                       <td>{appointment.date}</td>
                       <td>{appointment.status}</td>
                       <td>

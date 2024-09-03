@@ -24,6 +24,12 @@ const bookappointment = async (req, res) => {
     const appointment = await Appointment({
       date: req.body.date,
       time: req.body.time,
+      age: req.body.age,
+      bloodGroup: req.body.bloodGroup,
+      gender: req.body.gender,
+      number: req.body.number,
+      familyDiseases: req.body.familyDiseases,
+      // prescription: req.body.prescription,
       doctorId: req.body.doctorId,
       userId: req.locals,
     });
@@ -39,7 +45,7 @@ const bookappointment = async (req, res) => {
 
     const doctornotification = Notification({
       userId: req.body.doctorId,
-      content: `You have an appointment with ${user.firstname} ${user.lastname} on ${req.body.date} at ${req.body.time}`,
+      content: `You have an appointment with ${user.firstname} ${user.lastname} on ${req.body.date} at ${req.body.time} Age: ${user.age} bloodGropu: ${user.bloodGroup} Gender: ${user.gender} Mobile Number:${user.number} Family Diseases ${user.familyDiseases}` ,
     });
 
     await doctornotification.save();
