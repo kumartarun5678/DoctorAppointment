@@ -4,7 +4,8 @@
   "description": "Doctor appointment website",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "vercel-build": "echo 'No build needed'"
   },
   "author": "Tarun Kumar",
   "license": "ISC",
