@@ -13,119 +13,168 @@ axios.defaults.baseURL = process.env.REACT_APP_SERVER_DOMAIN;
 
 function Login() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [formDetails, setFormDetails] = useState({
     email: "",
     password: "",
-    role: "", 
+    role: "",
   });
-  const navigate = useNavigate();
-  const [userRole, setUserRole] = useState(""); 
+
+  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+
+  // 🔹 Validate each input field
+  const validateField = (name, value) => {
+    let error = "";
+
+    switch (name) {
+      case "email":
+        if (!value.trim()) error = "Email is required";
+        else if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value))
+          error = "Invalid email format";
+        break;
+      case "password":
+        if (!value.trim()) error = "Password is required";
+        else if (value.length < 5)
+          error = "Password must be at least 5 characters long";
+        break;
+      case "role":
+        if (!value.trim()) error = "Please select a role";
+        break;
+      default:
+        break;
+    }
+
+    setErrors((prev) => ({ ...prev, [name]: error }));
+  };
+
   const inputChange = (e) => {
     const { name, value } = e.target;
-    return setFormDetails({
-      ...formDetails,
-      [name]: value,
-    });
+    setFormDetails((prev) => ({ ...prev, [name]: value }));
+    validateField(name, value);
   };
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    Object.entries(formDetails).forEach(([key, value]) => {
+      validateField(key, value);
+      if (!value.trim()) newErrors[key] = `${key} is required`;
+    });
+
+    setErrors((prev) => ({ ...prev, ...newErrors }));
+    return Object.values(newErrors).every((e) => e === "");
+  };
+
   const formSubmit = async (e) => {
+    e.preventDefault();
+    if (loading) return;
+
+    const isValid = validateForm();
+    if (!isValid) {
+      toast.error("Please fix the form errors before submitting");
+      return;
+    }
+
     try {
-      e.preventDefault();
+      setLoading(true);
       const { email, password, role } = formDetails;
-  
-      if (!email || !password) {
-        return toast.error("Email and password are required");
-      } else if (!role) {
-        return toast.error("Please select a role");
-      } else if (role !== "Admin" && role !== "Doctor" && role !== "Patient") {
-        return toast.error("Please select a valid role");
-      } else if (password.length < 5) {
-        return toast.error("Password must be at least 5 characters long");
-      }
-  
+
       const { data } = await toast.promise(
-        axios.post("/user/login", {
-          email,
-          password,
-          role,
-        }),
-        
+        axios.post("/user/login", { email, password, role }),
         {
-          pending: "Logging in...",
-          success: "Login successfully",
+          loading: "Logging in...",
+          success: "Login successful!",
           error: "Unable to login user",
-          loading: "Logging user...",
         }
       );
+
       localStorage.setItem("token", data.token);
-      dispatch(setUserInfo(jwt_decode(data.token).userId));
-      setUserRole(role);
-      getUser(jwt_decode(data.token).userId, role);
+      const decoded = jwt_decode(data.token);
+      dispatch(setUserInfo(decoded.userId));
+      getUser(decoded.userId, role);
     } catch (error) {
-      return error;
+      toast.error(error?.response?.data?.message || "Login failed");
+    } finally {
+      setLoading(false);
     }
   };
-  
 
   const getUser = async (id, role) => {
     try {
       const temp = await fetchData(`/user/getuser/${id}`);
       dispatch(setUserInfo(temp));
-      if (role === "Admin") {
-        return navigate("/dashboard/home");
-      } else if (role === "Patient"){
-        return navigate("/");
-      } else {
-        return navigate("/");
-      }
+      if (role === "Admin") return navigate("/dashboard/home");
+      if (role === "Doctor") return navigate("/");
+      return navigate("/");
     } catch (error) {
-      return error;
+      toast.error("Failed to fetch user details");
     }
   };
 
   return (
     <>
-      <Navbar  /> 
+      <Navbar />
       <section className="register-section flex-center">
         <div className="register-container flex-center">
           <h2 className="form-heading">Sign In</h2>
           <form onSubmit={formSubmit} className="register-form">
+            {/* Email */}
             <input
               type="email"
               name="email"
-              className="form-input"
+              className={`form-input ${errors.email ? "error-input" : ""}`}
               placeholder="Enter your email"
               value={formDetails.email}
               onChange={inputChange}
+              onBlur={(e) => validateField(e.target.name, e.target.value)}
             />
+            {errors.email && <p className="error-text">{errors.email}</p>}
+
+            {/* Password */}
             <input
               type="password"
               name="password"
-              className="form-input"
+              className={`form-input ${errors.password ? "error-input" : ""}`}
               placeholder="Enter your password"
               value={formDetails.password}
               onChange={inputChange}
+              onBlur={(e) => validateField(e.target.name, e.target.value)}
             />
+            {errors.password && <p className="error-text">{errors.password}</p>}
+
+            {/* Role */}
             <select
               name="role"
-              className="form-input"
+              className={`form-input ${errors.role ? "error-input" : ""}`}
               value={formDetails.role}
               onChange={inputChange}
+              onBlur={(e) => validateField(e.target.name, e.target.value)}
             >
               <option value="">Select Role</option>
               <option value="Admin">Admin</option>
               <option value="Doctor">Doctor</option>
               <option value="Patient">Patient</option>
             </select>
-            <button type="submit" className="btn form-btn">
-              sign in
+            {errors.role && <p className="error-text">{errors.role}</p>}
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              className="btn form-btn"
+              disabled={loading}
+            >
+              {loading ? "Signing in..." : "Sign In"}
             </button>
           </form>
+
           <NavLink className="login-link" to={"/forgotpassword"}>
-              Forgot Password
-            </NavLink>
+            Forgot Password
+          </NavLink>
+
           <p>
             Not a user?{" "}
-            
             <NavLink className="login-link" to={"/register"}>
               Register
             </NavLink>

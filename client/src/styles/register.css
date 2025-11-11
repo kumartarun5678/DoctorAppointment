@@ -114,3 +114,27 @@ input::-webkit-inner-spin-button {
 .dropdown-item:hover {
   background-color: #f0f0f0;
 }
+
+.error-text {
+  color: #ff4d4d;
+  font-size: 0.8rem;
+  margin-top: -8px;
+  margin-bottom: 8px;
+}
+
+.error-input {
+  border: 1px solid #ff4d4d;
+  background-color: #ffeaea;
+}
+
+.error-text {
+  color: #ff4d4d;
+  font-size: 0.8rem;
+  margin-top: -8px;
+  margin-bottom: 8px;
+}
+
+.error-input {
+  border: 1px solid #ff4d4d;
+  background-color: #ffeaea;
+}
